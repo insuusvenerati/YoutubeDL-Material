@@ -2,7 +2,7 @@ var async = require('async');
 var fs = require('fs');
 var path = require('path');
 var youtubedl = require('youtube-dl');
-var config = require('./config/default.json');
+var config = require('config');
 var https = require('https');
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -19,7 +19,7 @@ var videoPath = config.get("YoutubeDLMaterial.Downloader.path-video");
 
 if (usingEncryption)
 {
-    
+
     var certFilePath = path.resolve(config.get("YoutubeDLMaterial.Encryption.cert-file-path"));
     var keyFilePath = path.resolve(config.get("YoutubeDLMaterial.Encryption.key-file-path"));
 
@@ -82,7 +82,7 @@ function getFileSizeMp3(name)
         var obj = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
     else
         var obj = 0;
-    
+
     return obj.filesize;
 }
 
@@ -102,7 +102,7 @@ function getFileSizeMp4(name)
             }
         }
     }
-    
+
     return filesize;
 }
 
@@ -113,7 +113,7 @@ function getJSONMp3(name)
     var obj = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
     else
         var obj = 0;
-    
+
     return obj;
 }
 
@@ -184,15 +184,15 @@ app.post('/tomp3', function(req, res) {
 
     youtubedl.getInfo(url, function(err, info) {
         if (err) throw err;
-       
+
         var size = info.size;
         fs.writeFile("data/"+audiopath, size, function(err) {
             if(err) {
                 return console.log(err);
             }
-        
+
             console.log("The file was saved!");
-        }); 
+        });
       });
     var completeString = "done";
     var audiopathEncoded = encodeURIComponent(audiopath);
@@ -266,12 +266,12 @@ app.post('/getMp3s', function(req, res) {
     var mp3s = [];
     var fullpath = audioPath;
     var files = fs.readdirSync(audioPath);
-    
+
     for (var i in files)
     {
         var nameLength = path.basename(files[i]).length;
         var ext = path.basename(files[i]).substring(nameLength-4, nameLength);
-        if (ext == ".mp3") 
+        if (ext == ".mp3")
         {
             var jsonobj = getJSONMp3(path.basename(files[i]).substring(0, path.basename(files[i]).length-4));
             var id = path.basename(files[i]).substring(0, path.basename(files[i]).length-4);
@@ -299,12 +299,12 @@ app.post('/getMp4s', function(req, res) {
     var mp4s = [];
     var fullpath = videoPath;
     var files = fs.readdirSync(videoPath);
-    
+
     for (var i in files)
     {
         var nameLength = path.basename(files[i]).length;
         var ext = path.basename(files[i]).substring(nameLength-4, nameLength);
-        if (ext == ".mp4") 
+        if (ext == ".mp4")
         {
             var jsonobj = getJSONMp4(path.basename(files[i]).substring(0, path.basename(files[i]).length-4));
             var id = path.basename(files[i]).substring(0, path.basename(files[i]).length-4);
@@ -377,7 +377,7 @@ app.get('/video/:id', function(req , res){
   if (range) {
     const parts = range.replace(/bytes=/, "").split("-")
     const start = parseInt(parts[0], 10)
-    const end = parts[1] 
+    const end = parts[1]
       ? parseInt(parts[1], 10)
       : fileSize-1
     const chunksize = (end-start)+1
@@ -409,7 +409,7 @@ app.get('/audio/:id', function(req , res){
   if (range) {
     const parts = range.replace(/bytes=/, "").split("-")
     const start = parseInt(parts[0], 10)
-    const end = parts[1] 
+    const end = parts[1]
       ? parseInt(parts[1], 10)
       : fileSize-1
     const chunksize = (end-start)+1
