@@ -1,8 +1,8 @@
 {
     "YoutubeDLMaterial": {
         "Host": {
-            "frontendurl": "http://example.com",
-            "backendurl": "http://example.com:17442/"
+            "frontendurl": "http://youtube.loc",
+            "backendurl": "http://youtube.loc:17442/"
         },
       "Encryption": {
         "use-encryption": false,
@@ -10,7 +10,7 @@
         "key-file-path": "/etc/letsencrypt/live/example.com/privkey.pem"
       },
       "Downloader": {
-        "path-base": "http://example.com:17442/",
+        "path-base": "http://youtube.loc:17442/",
         "path-audio": "audio/",
         "path-video": "video/"
       },
